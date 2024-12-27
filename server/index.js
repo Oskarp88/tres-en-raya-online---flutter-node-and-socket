@@ -5,6 +5,7 @@ const connectDB = require('./src/config/db');
 const dotenv = require('dotenv');
 const {Server} = require('socket.io');
 const cors = require('cors');
+const Room = require('./src/config/models/rooms');
 
 dotenv.config();
 
@@ -26,8 +27,25 @@ const io = new Server(server,{
 
 io.on("connection", (socket) => {
     console.log(`user connected! Id: ${socket.id}`.bgGreen)
-    socket.on('createRoom', ({nickname})=>{
-        console.log(nickname)
+    socket.on('createRoom', async({nickname})=>{
+        try {
+            const room = new Room();
+            const player = {
+                socketID: socket.id,
+                nickname,
+                playerType: 'X',
+            }
+            room.players.push(player);
+            room.turn = player;
+            
+            room = await room.save();
+            
+            const roomID = room._id.toString;
+            socket.join(roomID);
+            io.to(room).emit('createRoomSuccess', room)
+        } catch (error) {
+            console.log(error);
+        }
     })
 })
 
