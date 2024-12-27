@@ -3,7 +3,7 @@ const playerSchema = require('./player');
 
 const roomShema = new mongoose.Schema({
     occupancy: {
-        typeo: Number,
+        type: Number,
         default: 2,
     },
     maxRounds: {

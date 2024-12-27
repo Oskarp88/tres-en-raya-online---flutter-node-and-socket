@@ -29,7 +29,7 @@ io.on("connection", (socket) => {
     console.log(`user connected! Id: ${socket.id}`.bgGreen)
     socket.on('createRoom', async({nickname})=>{
         try {
-            const room = new Room();
+            let room = new Room();
             const player = {
                 socketID: socket.id,
                 nickname,
@@ -39,10 +39,10 @@ io.on("connection", (socket) => {
             room.turn = player;
             
             room = await room.save();
-            
+            console.log(room)
             const roomID = room._id.toString;
             socket.join(roomID);
-            io.to(room).emit('createRoomSuccess', room)
+            io.to(roomID).emit('createRoomSuccess', room)
         } catch (error) {
             console.log(error);
         }
