@@ -65,9 +65,12 @@ io.on("connection", (socket) => {
                 }
                 socket.join(roomId.toString());
                 room.players.push(player);
+                room.isJoin = false;
                 room = await room.save();
                 io.to(roomId.toString()).emit('joinRoomSuccess', room);
-                console.log('roomJoinsuccess')
+                io.to(roomId.toString()).emit('updatePlayers', room.players);
+                io.to(roomId.toString()).emit('updateRoom', room);
+
             }else{
                 socket.emit('errorOccured', 'The game is in progress, try again later.');
                 console.log('errorOccured', 'The game is in progress, try again later.')
