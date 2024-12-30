@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import 'package:tictactoe/provider/room_data_provider.dart';
+import 'package:tictactoe/utils/utils.dart';
 
 class GameMethods {
   void checkWinner(BuildContext context, Socket socketClient) {
@@ -34,6 +35,7 @@ class GameMethods {
         break;
       }else if(roomDataProvider.filledBoxes == 9){
         winner = '';
+        showGameDialog(context, 'Draw');
         break;
       }
     }
@@ -44,11 +46,13 @@ class GameMethods {
            'winnerSocketId': roomDataProvider.player1.socketID,
            'roomId': roomDataProvider.roomData['_id'],
         });
+        showGameDialog(context, '${roomDataProvider.player1.nickname} won!');
       }else{
         socketClient.emit('wiiner',{
            'winnerSocketId': roomDataProvider.player2.socketID,
            'roomId': roomDataProvider.roomData['_id'],
         });
+        showGameDialog(context, '${roomDataProvider.player2.nickname} won!');
       }
     }
   }
