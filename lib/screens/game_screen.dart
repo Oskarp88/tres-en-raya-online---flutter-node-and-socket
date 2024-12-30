@@ -29,12 +29,13 @@ class _GameScreenState extends State<GameScreen> {
       body: roomDataProvider.roomData['isJoin'] 
        ?
        const  WaitingLobby()
-       : const SafeArea(
+       :  SafeArea(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-               Scoreboard(),
-               TictactoeBoard()
+               const Scoreboard(),
+               const TictactoeBoard(),
+               Text('${roomDataProvider.roomData['turn']['nickname']}\'s turn')
             ],
           )
          )
