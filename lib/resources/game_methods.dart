@@ -48,12 +48,21 @@ class GameMethods {
         });
         showGameDialog(context, '${roomDataProvider.player1.nickname} won!');
       }else{
-        socketClient.emit('wiiner',{
+        socketClient.emit('winner',{
            'winnerSocketId': roomDataProvider.player2.socketID,
            'roomId': roomDataProvider.roomData['_id'],
         });
         showGameDialog(context, '${roomDataProvider.player2.nickname} won!');
       }
     }
+  }
+
+  void clearBoard(BuildContext context){
+    RoomDataProvider roomDataProvider = Provider.of<RoomDataProvider>(context, listen: false);
+
+    for (int i = 0; i < roomDataProvider.displayElements.length; i++){
+      roomDataProvider.updateDisplayElements(i, '');
+    }
+    roomDataProvider.setFilledBoxesToInit();
   }
 }

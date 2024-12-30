@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tictactoe/resources/game_methods.dart';
 
 void showSnackBar(BuildContext context, String content){
   ScaffoldMessenger.of(context).showSnackBar(
@@ -9,12 +10,16 @@ void showSnackBar(BuildContext context, String content){
 }
 
 void showGameDialog(BuildContext context, String text){
-  showDialog(context: context , builder: (context){
+  showDialog(barrierDismissible: false, context: context , builder: (context){
     return AlertDialog(
       title: Text(text),
       actions: [
         TextButton(
-          onPressed: (){}, 
+          onPressed: (){
+            GameMethods();
+            GameMethods().clearBoard(context);
+            Navigator.pop(context);
+          }, 
           child: const Text('Play Again'),
         )
       ],
